@@ -1,0 +1,38 @@
+# Системные файлы и директории операционной системы
+.DS_Store
+Thumbs.db
+
+# Логи и временные файлы
+/logs/
+/tmp/
+/bitrix/cache/
+/bitrix/managed_cache/
+/bitrix/html_pages/
+/bitrix/stack_cache/
+/bitrix/modules/.settings.php
+bitrix/modules/.settings_extra.php
+/local/cache/
+/local/php_interface/dbconn.php
+
+# Загрузка файлов
+/upload/
+/bitrix/backup/
+
+# Личные файлы и конфигурации
+/.env
+/local/php_interface/init.php
+
+# Файлы IDE
+.idea/
+/*.iml
+.vscode/
+
+# Composer файлы и директории
+/vendor/
+/composer.lock
+
+# Служебные файлы
+*.log
+*.sql
+*.tar.gz
+*.zip
