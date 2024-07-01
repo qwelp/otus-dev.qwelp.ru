@@ -1,6 +1,9 @@
 # Системные файлы и директории операционной системы
 .DS_Store
+.Spotlight-V100
+.Trashes
 Thumbs.db
+ehthumbs.db
 
 # Логи и временные файлы
 /logs/
@@ -10,7 +13,7 @@ Thumbs.db
 /bitrix/html_pages/
 /bitrix/stack_cache/
 /bitrix/modules/.settings.php
-bitrix/modules/.settings_extra.php
+/bitrix/modules/.settings_extra.php
 /local/cache/
 /local/php_interface/dbconn.php
 
@@ -33,6 +36,79 @@ bitrix/modules/.settings_extra.php
 
 # Служебные файлы
 *.log
-*.sql
 *.tar.gz
+
+# Bitrix 24
+/ai/*
+/apconnect/*
+/desktop_app/*
+/marketplace/*
+/onec/*
+
+# Исключаем папку /bitrix кроме некоторых подпапок
+!/bitrix
+/bitrix/*
+
+# Оставляем печатные формы интернет-магазина
+!/bitrix/admin/
+/bitrix/admin/*
+!/bitrix/admin/reports/
+
+# Оставляем нестандартные компоненты
+!/bitrix/components/
+/bitrix/components/bitrix/
+
+# Сохраняем весь php_interface за редкими исключениями
+!/bitrix/php_interface/
+/bitrix/php_interface/dbconn.ph*
+/bitrix/php_interface/after_connect*
+/bitrix/php_interface/logs/
+
+# Сохраняем шаблоны сайта
+!/bitrix/templates/
+
+# Исключаем логи
+/local/php_interface/logs/
+/local/logs/
+
+# Различные системные папки и файлы хостингов и операционных систем
+/cgi-bin/
+/awstats/
+/webstat/
+
+# Исключаем все текстовые и подобные ресурсы
+*.xml
+*.html
+*.txt
+*.css.map
+
+# Архивы, включая многотомные
 *.zip
+*.zip*
+*.tar
+*.tar*
+*.enc
+*.enc*
+*.gz
+*.gz*
+*.tgz
+*.tgz*
+*.sql
+*.rar
+.hg
+.ftpconfig
+*.doc
+*.docx
+*.pdf
+*.rtf
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+*.psd
+*.psb
+*.sketch
+core.*
+
+# Храним robots.txt
+!/robots.txt
