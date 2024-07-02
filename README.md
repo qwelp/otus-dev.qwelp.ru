@@ -4,7 +4,7 @@
 
 ## Требования
 
-- PHP 7.4 или выше
+- PHP 8.1 или выше
 - MySQL 5.7 или выше
 - Apache или Nginx
 - Composer

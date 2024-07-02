@@ -1,0 +1,15 @@
+{
+    "name": "bitrix/otus-dev.qwelp.ru",
+    "autoload": {
+        "psr-4": {
+            "OtusDev\\": "local/classes"
+        }
+    },
+    "authors": [
+        {
+            "name": "Bun Vladimir",
+            "email": "qwelp@mail.ru"
+        }
+    ],
+    "require": {}
+}
