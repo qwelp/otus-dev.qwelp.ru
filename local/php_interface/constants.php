@@ -1,1 +1,4 @@
 <?php
+
+const IBLOCK_ID_DOCTORS = 16;
+const IBLOCK_ID_PROCEDURES = 17;
