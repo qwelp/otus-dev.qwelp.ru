@@ -1,9 +1,14 @@
 <?php
 
-namespace OtusDev\Models\Lists;
+namespace Qwelp\Otusdev\Models\Lists;
 
-use OtusDev\Models\AbstractIblockPropertyValuesTable;
+use Bitrix\Main\Entity\ReferenceField;
+use Bitrix\Main\ORM\Fields\Relations\ManyToMany;
+use Qwelp\Otusdev\Models\AbstractIblockPropertyValuesTable;
 use Bitrix\Main\ORM\Fields\ExpressionField;
+use Bitrix\Main\ORM\Fields\Relations\Reference;
+use Qwelp\Otusdev\Models\Lists\ProceduresPropertyValuesTable;
+use Bitrix\Main\ORM\Query\Join;
 
 class DoctorsPropertyValuesTable extends AbstractIblockPropertyValuesTable
 {
@@ -21,6 +26,15 @@ class DoctorsPropertyValuesTable extends AbstractIblockPropertyValuesTable
             ['IBLOCK_ELEMENT_ID'],
             ['fetch_data_modification' => [static::class, 'getMultipleFieldIdValueModifier']]
         );
+
+        //$map['PROCEDURES_TEST'] = (new ManyToMany('PROCEDURES_TEST', ProceduresPropertyValuesTable::class))->configureTableName('b_iblock_element_prop_m16');
+
+        $map['PROCEDURES_TEST'] = (new Reference(
+            'PROCEDURES_TEST',
+            ProceduresPropertyValuesTable::class,
+            Join::on('this.PROCEDURES_ID', 'ref.IBLOCK_ELEMENT_ID')
+        ))
+        ->configureJoinType('inner');
 
         return parent::getMap() + $map;
     }

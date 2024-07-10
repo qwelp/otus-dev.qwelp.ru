@@ -112,3 +112,6 @@ core.*
 
 # Храним robots.txt
 !/robots.txt
+
+otus/console.php
+otus/test.php

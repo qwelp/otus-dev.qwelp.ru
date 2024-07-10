@@ -3,10 +3,13 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 
 $APPLICATION->SetTitle('Врачи');
 
+use Bitrix\Main\Loader;
 use Bitrix\Main\Grid\Options;
-use \OtusDev\Models\Lists\DoctorsPropertyValuesTable as DoctorsTable;
-use \OtusDev\Models\Lists\ProceduresPropertyValuesTable as ProceduresTable;
+use \Qwelp\Otusdev\Models\Lists\DoctorsPropertyValuesTable as DoctorsTable;
+use \Qwelp\Otusdev\Models\Lists\ProceduresPropertyValuesTable as ProceduresTable;
 use Bitrix\Main\Application;
+
+Loader::includeModule('qwelp.otusdev');
 
 $context = Application::getInstance()->getContext();
 $request = $context->getRequest();

@@ -3,7 +3,10 @@
     "autoload": {
         "psr-4": {
             "OtusDev\\": "local/classes"
-        }
+        },
+        "files": [
+            "bitrix/modules/orm_annotations.php"
+        ]
     },
     "authors": [
         {
@@ -11,5 +14,10 @@
             "email": "qwelp@mail.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "symfony/console": "^5.0"
+    },
+    "config": {
+        "vendor-dir": "bitrix/vendor"
+    }
 }

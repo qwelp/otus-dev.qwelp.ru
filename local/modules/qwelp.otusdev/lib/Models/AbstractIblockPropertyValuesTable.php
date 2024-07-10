@@ -1,6 +1,6 @@
 <?php
 
-namespace OtusDev\Models;
+namespace Qwelp\Otusdev\Models;
 
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Iblock\PropertyEnumerationTable;
@@ -86,7 +86,7 @@ abstract class AbstractIblockPropertyValuesTable extends DataManager
                         ['fetch_data_modification' => [static::class, 'getMultipleFieldValueModifier']]
                     );
 
-                    if ($property['USER_TYPE'] === 'EList' || $property['PROPERTY_TYPE'] === 'E') {
+                    if ($property['USER_TYPE'] === 'EList') {
                         $map[$property['CODE'].'_ELEMENT_NAME'] = new ExpressionField(
                             $property['CODE'].'_ELEMENT_NAME',
                             sprintf('(select group_concat(e.NAME SEPARATOR "\0") as VALUE from %s as m join b_iblock_element as e on m.VALUE = e.ID where m.IBLOCK_ELEMENT_ID = %s and m.IBLOCK_PROPERTY_ID = %d)',
@@ -313,17 +313,5 @@ abstract class AbstractIblockPropertyValuesTable extends DataManager
             return;
         }
 
-        $iblockId = static::IBLOCK_ID;
-
-//         $php = <<<PHP
-// namespace $namespace;
-
-// class {$className} extends \Models\AbstractIblockPropertyMultipleValuesTable
-// {
-//     const IBLOCK_ID = {$iblockId};
-// }
-
-// PHP;
-//         eval($php);
     }
 }
