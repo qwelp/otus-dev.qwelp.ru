@@ -1,8 +1,10 @@
 <?php
 
 $requireFiles = [
-    '/vendor/autoload.php',
-    '/local/php_interface/constants.php'
+    '/bitrix/vendor/autoload.php',
+    '/local/php_interface/constants.php',
+    '/local/php_interface/events.php',
+    '/local/php_interface/scripts.php',
 ];
 
 foreach ($requireFiles as $file) {

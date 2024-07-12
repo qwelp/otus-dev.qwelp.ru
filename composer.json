@@ -2,7 +2,7 @@
     "name": "bitrix/otus-dev.qwelp.ru",
     "autoload": {
         "psr-4": {
-            "OtusDev\\": "local/classes"
+            "Otus\\": "local/classes"
         },
         "files": [
             "bitrix/modules/orm_annotations.php"
