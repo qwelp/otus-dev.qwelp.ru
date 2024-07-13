@@ -5,6 +5,11 @@ $arJsConfig = array(
         'js' => '/local/js/otus/props/booking/script.js',
         'css' => '',
         'rel' => array(),
+    ),
+    'startWorkingDay' => array(
+        'js' => '/local/js/otus/StartWorkingDay/script.js',
+        'css' => '',
+        'rel' => array(),
     )
 );
 
