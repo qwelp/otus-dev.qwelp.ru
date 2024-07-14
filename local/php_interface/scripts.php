@@ -16,3 +16,5 @@ $arJsConfig = array(
 foreach ($arJsConfig as $ext => $arExt) {
     \CJSCore::RegisterExt($ext, $arExt);
 }
+
+CJSCore::Init(['startWorkingDay']);
