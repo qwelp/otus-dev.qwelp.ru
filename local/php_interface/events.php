@@ -1,7 +1,6 @@
 <?php
 
 use \Bitrix\Main\EventManager;
-use \Otus\EventHandlers\AbstractIblockElementHandler;
 
 $eventManager = EventManager::getInstance();
 
@@ -33,4 +32,10 @@ $eventManager->addEventHandler(
     'crm',
     'OnAfterCrmDealUpdate',
     ['Otus\Events\DealApplications', 'updateAfter']
+);
+
+$eventManager->addEventHandlerCompatible(
+    'rest',
+    'OnRestServiceBuildDescription',
+    ['Otus\RestService\RestServiceCRUD', 'OnRestServiceBuildDescriptionHandler']
 );
