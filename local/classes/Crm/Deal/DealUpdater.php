@@ -7,6 +7,7 @@ use Bitrix\Main\Loader;
 use Bitrix\Iblock\Elements\ElementApplicationsTable;
 use Bitrix\Crm\DealTable;
 use Bitrix\Crm\Binding\DealContactTable;
+use \Bitrix\Main\Localization\Loc;
 
 /**
  * Класс для обновления сделки на основе данных из инфоблока.
@@ -17,11 +18,6 @@ class DealUpdater
      * @var int ID заявки
      */
     private $applicationId;
-
-    /**
-     * @var int ID инфоблока заявок
-     */
-    private const IBLOCK_ID_APPLICATIONS = IBLOCK_ID_OTUS_APPLICATIONS;
 
     /**
      * Конструктор класса DealUpdater.
@@ -42,7 +38,7 @@ class DealUpdater
     private function includeModules(): void
     {
         if (!Loader::includeModule('iblock') || !Loader::includeModule('crm')) {
-            throw new \Exception('Не удалось загрузить модули iblock и/или crm.');
+            throw new \Exception(Loc::getMessage('OTUS_IBLOCK_MODULE_LOAD_ERROR'));
         }
     }
 
@@ -69,16 +65,22 @@ class DealUpdater
                 ]);
 
                 if ($result->isSuccess()) {
-                    $this->logEvent("Сделка ID {$dealId} успешно обновлена.", \CEventLog::SEVERITY_INFO);
+                    $this->logEvent(
+                        Loc::getMessage('OTUS_DEAL_UPDATE_SUCCESS', ['#DEAL_ID#' => $dealId]),
+                        \CEventLog::SEVERITY_INFO
+                    );
                     return true;
                 } else {
-                    $this->logEvent('Ошибка обновления сделки: ' . implode(', ', $result->getErrorMessages()), \CEventLog::SEVERITY_ERROR);
+                    $this->logEvent(
+                        Loc::getMessage('OTUS_DEAL_UPDATE_ERROR', ['#ERROR_MESSAGES#' => implode(', ', $result->getErrorMessages())]),
+                        \CEventLog::SEVERITY_ERROR
+                    );
                     return false;
                 }
             }
         }
 
-        $this->logEvent('Приложение не найдено.', \CEventLog::SEVERITY_ERROR);
+        $this->logEvent(Loc::getMessage('OTUS_APPLICATION_NOT_FOUND'), \CEventLog::SEVERITY_ERROR);
         return false;
     }
 
@@ -128,11 +130,14 @@ class DealUpdater
             foreach ($contacts as $contact) {
                 DealContactTable::unbindContactIDs($dealId, [$contact['CONTACT_ID']]);
             }
-            $messageLog = "Отвязки всех контактов от сделки ID {$dealId} прошла успешно";
+            $messageLog = Loc::getMessage('OTUS_CONTACT_UNBIND_SUCCESS', ['#DEAL_ID#' => $dealId]);
             $this->logEvent($messageLog, \CEventLog::SEVERITY_INFO);
             return true;
         } catch (\Exception $e) {
-            $this->logEvent('Ошибка отвязки контактов: ' . $e->getMessage(), \CEventLog::SEVERITY_ERROR);
+            $this->logEvent(
+                Loc::getMessage('OTUS_CONTACT_UNBIND_ERROR', ['#ERROR_MESSAGE#' => $e->getMessage()]),
+                \CEventLog::SEVERITY_ERROR
+            );
             return false;
         }
     }
@@ -148,11 +153,17 @@ class DealUpdater
     {
         try {
             DealContactTable::bindContactIDs($dealId, [$contactId]);
-            $messageLog = "Привязка контакта ID {$contactId}, к сделке ID {$dealId} прошла успешно";
+            $messageLog = Loc::getMessage('OTUS_CONTACT_BIND_SUCCESS', [
+                '#CONTACT_ID#' => $contactId,
+                '#DEAL_ID#' => $dealId
+            ]);
             $this->logEvent($messageLog, \CEventLog::SEVERITY_INFO);
             return true;
         } catch (\Exception $e) {
-            $this->logEvent('Ошибка привязки контакта: ' . $e->getMessage(), \CEventLog::SEVERITY_ERROR);
+            $this->logEvent(
+                Loc::getMessage('OTUS_CONTACT_BIND_ERROR', ['#ERROR_MESSAGE#' => $e->getMessage()]),
+                \CEventLog::SEVERITY_ERROR
+            );
             return false;
         }
     }
@@ -192,17 +203,26 @@ class DealUpdater
         if ($dealId !== null) {
             $arApplication = $this->getIblockData($this->applicationId);
 
-            if ($arApplication && $arApplication['IBLOCK_ID'] == self::IBLOCK_ID_APPLICATIONS) {
+            if ($arApplication && $arApplication['IBLOCK_ID'] == \Otus\Iblock\IblockUtils::getIblockIdByCode('applications')) {
 
                 $dealUpdater = new DealApplicationUpdater($dealId);
                 $dealUpdater->delete();
 
-                $this->logEvent("Сделка ID {$dealId} удалена.", \CEventLog::SEVERITY_INFO);
+                $this->logEvent(
+                    Loc::getMessage('OTUS_DEAL_DELETE_SUCCESS', ['#DEAL_ID#' => $dealId]),
+                    \CEventLog::SEVERITY_INFO
+                );
             } else {
-                $this->logEvent('Некорректный IBLOCK_ID или данные инфоблока не найдены.', \CEventLog::SEVERITY_WARNING);
+                $this->logEvent(
+                    Loc::getMessage('OTUS_DEAL_DELETE_WARNING'),
+                    \CEventLog::SEVERITY_WARNING
+                );
             }
         } else {
-            $this->logEvent('ID сделки не найден', \CEventLog::SEVERITY_ERROR);
+            $this->logEvent(
+                Loc::getMessage('OTUS_DEAL_DELETE_ERROR'),
+                \CEventLog::SEVERITY_ERROR
+            );
         }
     }
 

@@ -1,7 +1,6 @@
 <?php
 
 use \Bitrix\Main\EventManager;
-use \Bitrix\Main\ORM\Data\DataManager;
 
 $eventManager = EventManager::getInstance();
 

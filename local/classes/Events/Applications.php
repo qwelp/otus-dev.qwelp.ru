@@ -17,7 +17,7 @@ class Applications
      */
     public static function updateAfter(array &$arApplication): void
     {
-        if ($arApplication['IBLOCK_ID'] != IBLOCK_ID_OTUS_APPLICATIONS) return;
+        if ($arApplication['IBLOCK_ID'] != \Otus\Iblock\IblockUtils::getIblockIdByCode('applications')) return;
 
         $applicationId = $arApplication['ID'];
         $dealUpdater = new DealUpdater($applicationId);
@@ -32,7 +32,7 @@ class Applications
      */
     public static function addAfter(array &$arApplication): void
     {
-        if ($arApplication['IBLOCK_ID'] != IBLOCK_ID_OTUS_APPLICATIONS) return;
+        if ($arApplication['IBLOCK_ID'] != \Otus\Iblock\IblockUtils::getIblockIdByCode('applications')) return;
 
         $applicationId = $arApplication['ID'];
         $dealUpdater = new DealUpdater($applicationId);

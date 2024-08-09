@@ -3,6 +3,7 @@
 namespace Otus\Crm\Deal;
 
 use Bitrix\Main\Loader;
+use Bitrix\Main\Localization\Loc;
 use Bitrix\Crm\Binding\DealContactTable;
 use Bitrix\Iblock\Elements\ElementApplicationsTable;
 use Bitrix\Crm\DealTable;
@@ -37,7 +38,7 @@ class DealApplicationUpdater
     private function includeModules(): void
     {
         if (!Loader::includeModule('iblock') || !Loader::includeModule('crm')) {
-            throw new \Exception('Не удалось загрузить модули iblock и/или crm.');
+            throw new \Exception(Loc::getMessage('OTUS_IBLOCK_MODULE_LOAD_ERROR'));
         }
     }
 
@@ -55,9 +56,20 @@ class DealApplicationUpdater
 
         if ($applicationData) {
             $this->updateApplication($applicationData['ID'], $dealData['OPPORTUNITY'], $dealContacts);
-            $this->logEvent("Заявка (ID: {$applicationData['ID']}) успешно обновлена на основе данных сделки (ID: {$this->dealId}).", \CEventLog::SEVERITY_INFO);
+            $this->logEvent(
+                Loc::getMessage('OTUS_APPLICATION_UPDATE_SUCCESS', [
+                    '#APPLICATION_ID#' => $applicationData['ID'],
+                    '#DEAL_ID#' => $this->dealId
+                ]),
+                \CEventLog::SEVERITY_INFO
+            );
         } else {
-            $this->logEvent("Не удалось найти заявку, связанную с сделкой (ID: {$this->dealId}).", \CEventLog::SEVERITY_ERROR);
+            $this->logEvent(
+                Loc::getMessage('OTUS_APPLICATION_NOT_FOUND', [
+                    '#DEAL_ID#' => $this->dealId
+                ]),
+                \CEventLog::SEVERITY_ERROR
+            );
         }
     }
 
@@ -126,7 +138,8 @@ class DealApplicationUpdater
             'AMOUNT' => $amount,
             'CLIENT_ID' => $contactIds
         ];
-        \CIBlockElement::SetPropertyValuesEx($applicationId, IBLOCK_ID_OTUS_APPLICATIONS, $propertyValues);
+        \CIBlockElement::SetPropertyValuesEx(
+            $applicationId, \Otus\Iblock\IblockUtils::getIblockIdByCode('applications'), $propertyValues);
     }
 
     /**
