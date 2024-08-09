@@ -48,7 +48,12 @@ class CBPDz9Activity extends BaseActivity
         $documentId = $rootActivity->GetDocumentId(); // DEAL_4
 
         $this->preparedProperties['Text'] = $companyName;
-        $this->log($this->preparedProperties['Text']);
+
+        if ($this->preparedProperties['Text'] === null) {
+            $this->log('Сообщение не найдено');
+        } else {
+            $this->log($this->preparedProperties['Text']);
+        }
 
         $this->saveCompany($documentId, $companyName);
 

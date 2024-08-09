@@ -10,30 +10,53 @@ use Otus\Crm\Deal\DealApplicationUpdater;
 class DealApplications
 {
     /**
-     * Обработчик события после обновления сделки.
+     * Обработка события после изменения сделки (добавление или обновление).
      *
-     * @param array &$fields Поля сделки
+     * @param array &$arDeal Поля сделки
      * @return void
      */
-    public static function updateAfter(array &$fields): void
+    private static function processDeal(array &$arDeal): void
     {
-        if (!empty($fields['ID'])) {
-            $dealUpdater = new DealApplicationUpdater($fields['ID']);
-            $dealUpdater->updateDealApplication();
-        }
+        if (empty($arDeal['ID'])) return;
+
+        $dealUpdater = new DealApplicationUpdater($arDeal['ID']);
+        $dealUpdater->updateDealApplication();
+    }
+
+    /**
+     * Обработчик события после обновления сделки.
+     *
+     * @param array &$arDeal Поля сделки
+     * @return void
+     */
+    public static function updateAfter(array &$arDeal): void
+    {
+        self::processDeal($arDeal);
     }
 
     /**
      * Обработчик события после добавления сделки.
      *
-     * @param array &$fields Поля сделки
+     * @param array &$arDeal Поля сделки
      * @return void
      */
-    public static function addAfter(array &$fields): void
+    public static function addAfter(array &$arDeal): void
     {
-        if (!empty($fields['ID'])) {
-            $dealUpdater = new DealApplicationUpdater($fields['ID']);
-            $dealUpdater->updateDealApplication();
-        }
+        self::processDeal($arDeal);
+    }
+
+    /**
+     * Удаляет заявку по идентификатору сделки.
+     *
+     * Метод создает экземпляр класса DealApplicationUpdater для указанного идентификатора сделки
+     * и вызывает метод для удаления соответствующей заявки.
+     *
+     * @param int $dealId Идентификатор сделки
+     * @return void
+     */
+    public static function deleteApplication(int $dealId): void
+    {
+        $dealUpdater = new DealApplicationUpdater($dealId);
+        $dealUpdater->deleteApplication();
     }
 }

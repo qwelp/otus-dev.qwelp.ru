@@ -98,13 +98,18 @@ class DealApplicationUpdater
      */
     private function getApplicationData(): ?array
     {
-        return ElementApplicationsTable::getList([
+        $arApplications = ElementApplicationsTable::getList([
             'select' => [
                 'ID',
                 'DEAL_ID_VALUE' => 'DEAL_ID.VALUE'
             ],
             'filter' => ['DEAL_ID_VALUE' => $this->dealId],
         ])->fetch();
+
+        if ($arApplications) {
+            return $arApplications;
+        }
+        return null;
     }
 
     /**
@@ -140,5 +145,33 @@ class DealApplicationUpdater
             "ITEM_ID" => $this->dealId,
             "DESCRIPTION" => $message
         ]);
+    }
+
+    /**
+     * Удаляет заявку по сделке.
+     *
+     * Метод получает данные заявки по текущей сделке.
+     * Если данные заявки найдены, метод удаляет заявку из базы данных.
+     *
+     * @return void
+     */
+    public function deleteApplication(): void
+    {
+        $arApplicationData = $this->getApplicationData();
+
+        if ($arApplicationData && $arApplicationData['ID']) {
+            ElementApplicationsTable::delete($arApplicationData['ID']);
+        }
+    }
+
+    /**
+     * Удаляет сделку по ее идентификатору.
+     *
+     * @param int $dealId Идентификатор сделки
+     * @return void
+     */
+    public function delete(): void
+    {
+        DealTable::delete($this->dealId);
     }
 }

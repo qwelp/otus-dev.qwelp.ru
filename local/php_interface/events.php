@@ -1,6 +1,7 @@
 <?php
 
 use \Bitrix\Main\EventManager;
+use \Bitrix\Main\ORM\Data\DataManager;
 
 $eventManager = EventManager::getInstance();
 
@@ -23,6 +24,12 @@ $eventManager->addEventHandler(
 );
 
 $eventManager->addEventHandler(
+    'iblock',
+    'OnBeforeIBlockElementDelete',
+    ['Otus\Events\Applications', 'deleteDeal']
+);
+
+$eventManager->addEventHandler(
     'crm',
     'OnAfterCrmDealAdd',
     ['Otus\Events\DealApplications', 'addAfter']
@@ -32,6 +39,12 @@ $eventManager->addEventHandler(
     'crm',
     'OnAfterCrmDealUpdate',
     ['Otus\Events\DealApplications', 'updateAfter']
+);
+
+$eventManager->addEventHandler(
+    'crm',
+    'OnBeforeCrmDealDelete',
+    ['Otus\Events\DealApplications', 'deleteApplication']
 );
 
 $eventManager->addEventHandlerCompatible(

@@ -2,6 +2,7 @@
 
 namespace Otus\Crm\Deal;
 
+use Bitrix\Iblock\ElementTable;
 use Bitrix\Main\Loader;
 use Bitrix\Iblock\Elements\ElementApplicationsTable;
 use Bitrix\Crm\DealTable;
@@ -16,6 +17,11 @@ class DealUpdater
      * @var int ID заявки
      */
     private $applicationId;
+
+    /**
+     * @var int ID инфоблока заявок
+     */
+    private const IBLOCK_ID_APPLICATIONS = IBLOCK_ID_OTUS_APPLICATIONS;
 
     /**
      * Конструктор класса DealUpdater.
@@ -52,6 +58,10 @@ class DealUpdater
         if ($applicationData) {
             $dealId = $applicationData['DEAL'];
             $contactId = $applicationData['CLIENT'];
+
+            if (!$dealId) {
+                return false;
+            }
 
             if ($this->unbindAllContactsFromDeal($dealId) && $this->bindContactToDeal($dealId, $contactId)) {
                 $result = $this->updateDealFields($dealId, [
@@ -164,5 +174,49 @@ class DealUpdater
             "DESCRIPTION" => $message
         ]);
     }
-}
 
+    /**
+     * Удаляет сделку на основе данных заявки.
+     *
+     * Метод получает данные заявки, извлекает идентификатор сделки и проверяет данные инфоблока.
+     * Если данные корректны, создается экземпляр класса DealApplicationUpdater для удаления сделки.
+     * В журнал логируется информация об удалении или ошибки.
+     *
+     * @return void
+     */
+    public function deleteDeal(): void
+    {
+        $applicationData = $this->getApplicationData();
+        $dealId = $applicationData['DEAL'] ?? null;
+
+        if ($dealId !== null) {
+            $arApplication = $this->getIblockData($this->applicationId);
+
+            if ($arApplication && $arApplication['IBLOCK_ID'] == self::IBLOCK_ID_APPLICATIONS) {
+
+                $dealUpdater = new DealApplicationUpdater($dealId);
+                $dealUpdater->delete();
+
+                $this->logEvent("Сделка ID {$dealId} удалена.", \CEventLog::SEVERITY_INFO);
+            } else {
+                $this->logEvent('Некорректный IBLOCK_ID или данные инфоблока не найдены.', \CEventLog::SEVERITY_WARNING);
+            }
+        } else {
+            $this->logEvent('ID сделки не найден', \CEventLog::SEVERITY_ERROR);
+        }
+    }
+
+    /**
+     * Получает данные инфоблока по ID элемента.
+     *
+     * @param int $elementId ID элемента
+     * @return array|null Данные инфоблока или null, если элемент не найден
+     */
+    private function getIblockData(int $elementId): ?array
+    {
+        return \Bitrix\Iblock\ElementTable::getList([
+            'select' => ['ID', 'NAME', 'IBLOCK_ID'],
+            'filter' => ['ID' => $elementId]
+        ])->fetch() ?: null;
+    }
+}
