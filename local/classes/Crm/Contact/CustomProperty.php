@@ -22,7 +22,10 @@ class CustomProperty
 
         $arActivity = \Bitrix\Crm\ActivityTable::getList([
             'select' => ['START_TIME', 'OWNER_ID', 'PROVIDER_TYPE_ID'],
-            'filter' => ['ID' => $activityId]
+            'filter' => [
+                'ID' => $activityId,
+                'OWNER_TYPE_ID' => \CCrmOwnerType::Contact
+            ]
         ])->fetch();
 
         if (!$arActivity) {
@@ -33,13 +36,12 @@ class CustomProperty
             return;
         }
 
-        if (in_array($arActivity['PROVIDER_TYPE_ID'], ['TODO', 'CALL'])) {
+        if (in_array($arActivity['PROVIDER_TYPE_ID'], ['EMAIL', 'CALL'])) {
             $contactFields = [
-                'UF_CRM_1722681948' => $arActivity['START_TIME']
+                'UF_CONTACT_LAST_COMMUNICATION_DATE' => $arActivity['START_TIME']
             ];
 
-            $contactEntity = new \CCrmContact(false);
-            $result = $contactEntity->Update($arActivity['OWNER_ID'], $contactFields);
+            $result = \Bitrix\Crm\ContactTable::update($arActivity['OWNER_ID'], $contactFields);
 
             if ($result) {
                 self::logEvent(
