@@ -1,0 +1,79 @@
+.garage-popup .popup-window-content {
+    margin-bottom: 20px;
+}
+
+.bx-popup-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+.bx-popup-deal {
+    background-color: #f9f9f9;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bx-popup-deal:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.bx-popup-deal-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 0;
+    color: #34495e;
+}
+
+.bx-popup-deal-date {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+.bx-popup-product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.bx-popup-product-table th,
+.bx-popup-product-table td {
+    padding: 10px;
+    border: 1px solid #e3e3e3;
+    text-align: left;
+    font-size: 14px;
+}
+
+.bx-popup-product-table th {
+    background-color: #3bc8f5;
+    color: #fff;
+    font-weight: bold;
+}
+
+.bx-popup-product-table td {
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.bx-popup-product-table tr:hover {
+    background-color: #ecf0f1;
+}
+
+.bx-popup-product-table td {
+    padding: 12px;
+}
+
+.bx-popup-product-table th {
+    padding: 12px;
+}

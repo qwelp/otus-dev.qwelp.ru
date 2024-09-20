@@ -1,0 +1,19 @@
+.crm-entity-widget-inner_client-auto-manager {
+    padding-bottom: 0 !important;
+}
+
+.client-auto-manager__items {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    color: #424956;
+    word-break: break-word;
+    font: 15px / 17px var(--ui-font-family-primary, var(--ui-font-family-helvetica));
+}
+
+.client-auto-manager__items {
+    grid-gap: 8px;
+}
+

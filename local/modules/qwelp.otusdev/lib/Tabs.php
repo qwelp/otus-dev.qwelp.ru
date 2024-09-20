@@ -7,9 +7,9 @@ use Bitrix\Main\Event;
 
 class Tabs
 {
-    public static function setCustomTabs(Event $event): EventResult
+    public static function setCustomTabs(Event $event)
     {
-        $entityTypeID = $event->getParameter('entityTypeID');
+        /*$entityTypeID = $event->getParameter('entityTypeID');
         $tabs = $event->getParameter('tabs');
 
         if ($entityTypeID == \CCrmOwnerType::Deal) {
@@ -28,6 +28,6 @@ class Tabs
 
         return new EventResult(EventResult::SUCCESS, [
             'tabs' => $tabs,
-        ]);
+        ]);*/
     }
 }

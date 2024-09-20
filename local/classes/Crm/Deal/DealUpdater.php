@@ -91,7 +91,7 @@ class DealUpdater
      */
     private function getApplicationData(): ?array
     {
-        return ElementApplicationsTable::getList([
+        $data = ElementApplicationsTable::getList([
             'select' => [
                 'AMOUNT_VALUE' => 'AMOUNT.IBLOCK_GENERIC_VALUE',
                 'CLIENT' => 'CLIENT_ID.VALUE',
@@ -99,6 +99,8 @@ class DealUpdater
             ],
             'filter' => ['ID' => $this->applicationId]
         ])->fetch();
+
+        return $data !== false ? $data : null;
     }
 
     /**
